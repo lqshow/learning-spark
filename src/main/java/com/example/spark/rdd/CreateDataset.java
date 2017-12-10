@@ -1,6 +1,6 @@
 package com.example.spark.rdd;
 
-import com.example.spark.Helper;
+import com.example.spark.helpers.Utils;
 import com.example.spark.beans.Person;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoder;
@@ -17,7 +17,7 @@ public class CreateDataset {
     private static final Logger LOGGER = LoggerFactory.getLogger(CreateDataset.class);
 
     public static void main(String[] args) {
-        SparkSession spark = Helper.createSparkSession();
+        SparkSession spark = Utils.createSparkSession();
 
         stringDataset(spark);
         personDataset(spark);

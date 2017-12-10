@@ -1,6 +1,6 @@
 package com.example.spark.rdd;
 
-import com.example.spark.Helper;
+import com.example.spark.helpers.Utils;
 import org.apache.spark.api.java.function.FilterFunction;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.SparkSession;
@@ -12,9 +12,9 @@ public class FilterRdd {
 
 
     public static void main(String[] args) {
-        SparkSession spark = Helper.createSparkSession();
+        SparkSession spark = Utils.createSparkSession();
 
-        Dataset<String> peopleData = Helper.loadTextFile(spark);
+        Dataset<String> peopleData = Utils.datasetFromTextFile(spark);
 
         filterYouth(peopleData);
         filterMiddleAge(peopleData);

@@ -1,6 +1,6 @@
 package com.example.spark.rdd;
 
-import com.example.spark.Helper;
+import com.example.spark.helpers.Utils;
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.apache.spark.api.java.function.ForeachFunction;
 import org.apache.spark.sql.Dataset;
@@ -13,8 +13,8 @@ import java.util.Iterator;
 public class FlatMapRdd {
 
     public static void main(String[] args) {
-        SparkSession spark = Helper.createSparkSession();
-        Dataset<String> peopleData = Helper.loadTextFile(spark);
+        SparkSession spark = Utils.createSparkSession();
+        Dataset<String> peopleData = Utils.datasetFromTextFile(spark);
 
         flatMappRdd(peopleData);
     }

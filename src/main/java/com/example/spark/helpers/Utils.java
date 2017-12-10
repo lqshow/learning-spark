@@ -1,6 +1,7 @@
-package com.example.spark;
+package com.example.spark.helpers;
 
 import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.SparkSession;
@@ -8,7 +9,7 @@ import org.apache.spark.sql.SparkSession;
 import java.io.Serializable;
 import java.net.URL;
 
-public class Helper implements Serializable {
+public class Utils implements Serializable {
     private final static String appName = "Simple Application";
 
     public static SparkSession createSparkSession() {
@@ -21,19 +22,32 @@ public class Helper implements Serializable {
         return spark;
     }
 
+    public static JavaSparkContext createJavaSparkContext(SparkSession spark) {
+        JavaSparkContext jsc = new JavaSparkContext(spark.sparkContext());
+
+        return jsc;
+    }
+
     public static JavaSparkContext createJavaSparkContext() {
         SparkConf conf = new SparkConf()
                 .setAppName(appName)
                 .setMaster("local");
 
-        JavaSparkContext sc = new JavaSparkContext(conf);
+        JavaSparkContext jsc = new JavaSparkContext(conf);
 
-        return sc;
+        return jsc;
     }
 
-    public static Dataset<String> loadTextFile(SparkSession spark) {
-        URL path = Helper.class.getResource("/people.txt");
+    public static Dataset<String> datasetFromTextFile(SparkSession spark) {
+        URL path = Utils.class.getResource("/people.txt");
         Dataset<String> peopleData = spark.read().textFile(path.toString());
+
+        return peopleData;
+    }
+
+    public static JavaRDD<String> javaRDDFromTextFile(SparkSession spark) {
+        URL path = Utils.class.getResource("/people.txt");
+        JavaRDD<String> peopleData = spark.read().textFile(path.toString()).javaRDD();
 
         return peopleData;
     }
