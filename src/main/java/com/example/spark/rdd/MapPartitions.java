@@ -20,6 +20,9 @@ public class MapPartitions {
     }
 
     static void mapPartitionsRdd(Dataset<String> peopleData) {
+        /**
+         * 先partition，再把每个partition进行map函数
+         */
         Dataset<String> mapPartitionsRDD = peopleData.mapPartitions(new MapPartitionsFunction<String, String>() {
             @Override
             public Iterator<String> call(Iterator<String> lines) throws Exception {
@@ -37,12 +40,12 @@ public class MapPartitions {
         /**
          * output
          *
-         |      value|
-         +-----------+
-         |MICHAEL, 29|
-         |   ANDY, 30|
-         | JUSTIN, 19|
-         +-----------+
+         * |      value|
+         *  +-----------+
+         * |MICHAEL, 29|
+         * |   ANDY, 30|
+         * | JUSTIN, 19|
+         * +-----------+
          */
     }
 

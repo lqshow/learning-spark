@@ -1,5 +1,6 @@
 package com.example.spark.rdd.pairRdd;
 
+import com.example.spark.helpers.ParseLine;
 import com.example.spark.rdd.javaRdd.ReduceRdd;
 import org.apache.commons.lang3.StringUtils;
 import com.example.spark.helpers.Utils;
@@ -22,10 +23,7 @@ public class MapToPairRdd {
 
         // input: String
         // output: (String, Integer)
-        JavaPairRDD<String, Integer> pairRDD = lines.mapToPair((PairFunction<String, String, Integer>) s -> {
-            String name = StringUtils.split(s, ",")[0].trim();
-            return new Tuple2(name, 1);
-        });
+        JavaPairRDD<String, Integer> pairRDD = lines.mapToPair(new ParseLine());
 
         pairRDD.foreach((VoidFunction<Tuple2<String, Integer>>) tuple -> {
             System.out.println("key: " + tuple._1 + ", value: " + tuple._2);

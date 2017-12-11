@@ -33,12 +33,12 @@ public class CreateDataset {
         /**
          *  output
          *
-         +-------------+
-         |        value|
-         +-------------+
-         |       pandas|
-         |i like pandas|
-         +-------------+
+         * +-------------+
+         * |        value|
+         * +-------------+
+         * |       pandas|
+         * |i like pandas|
+         * +-------------+
          */
 
         String[] arrLines = (String[]) lines.collect();
@@ -49,8 +49,8 @@ public class CreateDataset {
         /**
          *  output
          *
-         pandas
-         i like pandas
+         * pandas
+         * i like pandas
          */
     }
 
@@ -71,13 +71,13 @@ public class CreateDataset {
         /**
          * output
          *
-         +---+-------+
-         |age|   name|
-         +---+-------+
-         | 29|Michael|
-         | 30|   Andy|
-         | 18| Justin|
-         +---+-------+
+         * +---+-------+
+         * |age|   name|
+         * +---+-------+
+         * | 29|Michael|
+         * | 30|   Andy|
+         * | 18| Justin|
+         * +---+-------+
          */
     }
 
@@ -91,11 +91,11 @@ public class CreateDataset {
         /***
          * output
          *
-         +---+---+
-         | _1| _2|
-         +---+---+
-         |  1|  a|
-         +---+---+
+         * +---+---+
+         * | _1| _2|
+         * +---+---+
+         * |  1|  a|
+         * +---+---+
          */
     }
 }

@@ -34,16 +34,16 @@ public class FlatMapRdd {
         /**
          * output
          *
-         +-------+
-         |  value|
-         +-------+
-         |Michael|
-         |     29|
-         |   Andy|
-         |     30|
-         | Justin|
-         |     19|
-         +-------+
+         * +-------+
+         * |  value|
+         * +-------+
+         * |Michael|
+         * |     29|
+         * |   Andy|
+         * |     30|
+         * | Justin|
+         * |     19|
+         * +-------+
          */
 
         flatMapRdd.foreach(new ForeachFunction<String>() {
