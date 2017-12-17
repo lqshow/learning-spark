@@ -1,4 +1,4 @@
-package com.example.spark.rdd.dateFrame;
+package com.example.spark.rdd.dataFrame;
 
 public class CreateDataFrame {
 }

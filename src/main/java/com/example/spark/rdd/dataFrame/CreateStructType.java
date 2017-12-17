@@ -1,4 +1,4 @@
-package com.example.spark.rdd.dateFrame;
+package com.example.spark.rdd.dataFrame;
 
 import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.Metadata;

@@ -1,4 +1,4 @@
-package com.example.spark.rdd.dateFrame.read;
+package com.example.spark.rdd.dataFrame.read;
 
 import com.example.spark.helpers.Utils;
 import org.apache.spark.sql.DataFrameReader;
