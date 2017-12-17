@@ -13,6 +13,9 @@ import scala.Tuple2;
 
 import java.net.URL;
 
+/**
+ * 创建JavaPairRDD
+ */
 public class MapToPairRdd {
 
     public static void main(String[] args) {

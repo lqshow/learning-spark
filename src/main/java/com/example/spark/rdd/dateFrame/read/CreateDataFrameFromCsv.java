@@ -23,6 +23,14 @@ public class CreateDataFrameFromCsv {
                 .option("inferSchema", "true")
                 .load(csvPath.toString());
 
+        Dataset<Row> df2 = spark
+                .read()
+                .format("org.apache.spark.sql.execution.datasources.csv.CSVFileFormat")
+                .option("header", "true")
+                .option("inferSchema", "true")
+                .load(csvPath.toString());
+        df2.printSchema();
+
         df.printSchema();
         /**
          * schema output

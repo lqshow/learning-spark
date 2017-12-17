@@ -10,6 +10,9 @@ import org.apache.spark.api.java.JavaSparkContext;
 import java.net.URL;
 import java.util.Map;
 
+/**
+ * 对每个键对应的元素分别计数
+ */
 public class CountByKeyRdd {
     public static void main(String[] args) {
         JavaSparkContext jsc = Utils.createJavaSparkContext(Utils.createSparkSession());

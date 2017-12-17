@@ -1,13 +1,17 @@
 package com.example.spark.helpers;
 
 import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.SparkSession;
+import scala.Tuple2;
 
 import java.io.Serializable;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Utils implements Serializable {
     private final static String appName = "Simple Application";
@@ -50,5 +54,17 @@ public class Utils implements Serializable {
         JavaRDD<String> peopleData = spark.read().textFile(path.toString()).javaRDD();
 
         return peopleData;
+    }
+
+    public static JavaPairRDD<String, Integer> createJavaPairRddDemo(JavaSparkContext jsc) {
+        List<Tuple2<String, Integer>> input = new ArrayList();
+        input.add(new Tuple2("coffee", 1));
+        input.add(new Tuple2("coffee", 2));
+        input.add(new Tuple2("pandas", 3));
+
+
+        JavaPairRDD<String, Integer> pairRDD = jsc.parallelizePairs(input);
+
+        return pairRDD;
     }
 }

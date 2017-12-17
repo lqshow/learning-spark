@@ -14,6 +14,10 @@ public class ReduceRdd {
         URL path = ReduceRdd.class.getResource("/README.md");
         JavaRDD<String> lines = jsc.textFile(path.toString());
         JavaRDD<Integer> lineLengths = lines.map(s -> s.length());
+
+        /**
+         * 对于这个a，它代指的是返回值，而b是对lineLengths rdd各元素的遍历。
+         */
         int totalLength = lineLengths.reduce((a, b) -> a + b);
 
         System.out.println("totalLength: " + totalLength);

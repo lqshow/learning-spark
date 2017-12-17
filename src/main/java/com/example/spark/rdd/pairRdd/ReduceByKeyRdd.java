@@ -14,6 +14,9 @@ import scala.Tuple2;
 
 import java.net.URL;
 
+/**
+ * 合并具有相同键的值
+ */
 public class ReduceByKeyRdd {
     public static void main(String[] args) {
         JavaSparkContext jsc = Utils.createJavaSparkContext(Utils.createSparkSession());

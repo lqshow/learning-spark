@@ -32,8 +32,8 @@ public class TransformationRdd {
         JavaRDD<List<?>> rdd3 = jsc.parallelize(data3);
 
         union(rdd1, rdd2, rdd3);
-        intersection(rdd1, rdd2);//开销大
-        distinct(rdd1);//开销大
+        intersection(rdd1, rdd2);//开销大（通过网络混洗数据来发现共有元素）
+        distinct(rdd1);//开销大（将所有数据通过网络进行混洗）
         subtract(rdd1, rdd2);
     }
 

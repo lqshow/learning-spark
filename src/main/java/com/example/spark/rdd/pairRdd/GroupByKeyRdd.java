@@ -15,6 +15,9 @@ import java.net.URL;
 import java.util.Map;
 import java.util.List;
 
+/**
+ * 对具有相同键的值进行分组
+ */
 public class GroupByKeyRdd {
     public static void main(String[] args) {
         JavaSparkContext jsc = Utils.createJavaSparkContext(Utils.createSparkSession());
