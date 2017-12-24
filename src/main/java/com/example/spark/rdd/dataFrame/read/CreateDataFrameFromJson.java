@@ -25,7 +25,7 @@ public class CreateDataFrameFromJson {
          * output
          *
          * root
-         * |-- age: string (nullable = true)
+         * |-- age: long (nullable = true)
          * |-- name: string (nullable = true)
          */
 
@@ -38,7 +38,7 @@ public class CreateDataFrameFromJson {
          * +---+-------+
          * |age|   name|
          * +---+-------+
-         * | 30|Michael|
+         * | null|Michael|
          * | 30|   Andy|
          * | 19| Justin|
          * +---+-------+

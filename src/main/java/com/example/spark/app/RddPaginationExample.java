@@ -22,7 +22,7 @@ public class RddPaginationExample {
         JavaSparkContext jsc = Utils.createJavaSparkContext(Utils.createSparkSession());
 
         // load rdd
-        URL path = ReduceRdd.class.getResource("/README.md");
+        URL path = RddPaginationExample.class.getResource("/README.md");
         JavaRDD<String> lines = jsc.textFile(path.toString());
 
         long offset = Long.valueOf(args[0].trim());
