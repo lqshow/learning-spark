@@ -15,7 +15,7 @@
     <thrift.executable>thrift</thrift.executable>
     <scala.version>2.11</scala.version>
     <slf4j.version>1.7.25</slf4j.version>
-    <spark.version>2.1.0</spark.version>
+    <spark.version>2.2.0</spark.version>
     <hadoop.version>2.6.4</hadoop.version>
   </properties>
 
@@ -202,6 +202,18 @@
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
       <version>8.0.8-dmr</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.crunch</groupId>
+      <artifactId>crunch-core</artifactId>
+      <version>0.15.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.opencsv</groupId>
+      <artifactId>opencsv</artifactId>
+      <version>4.1</version>
     </dependency>
 
   </dependencies>
