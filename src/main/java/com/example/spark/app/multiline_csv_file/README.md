@@ -1,4 +1,4 @@
-### overview
+### Overview
 Spark 2.2以下版本对于读取csv单元格内存在多行值(LF)是存在问题的，spark 2.2.0版本虽然修复了该问题，添加了multiLine参数，
 但是加上该参数后，encoding参数会失效，对于中文非utf8编码来说读取出来是一堆乱码。
 
@@ -30,7 +30,7 @@ jsc.newAPIHadoopFile("/Users/linqiong/Downloads/bb_gbk.csv",
   .map(s -> s._2().toString());
 ```
 
-- 通过读取二进制文件来解决，该方案效率稍低，需map所有字符解码
+- 通过读取二进制文件来解决
 
 #### opencsv maven dependency
 ```mxml
