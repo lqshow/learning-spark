@@ -1,38 +1,32 @@
 package com.example.spark.sql;
 
 import com.example.spark.helpers.Utils;
+import com.example.spark.rdd.dataFrame.read.CreateDataFrameFromExcel;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.RowFactory;
 import org.apache.spark.sql.SparkSession;
+import org.apache.spark.sql.expressions.WindowSpec;
+import org.apache.spark.sql.expressions.Window;
 import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
+
+
+import java.net.URL;
 
 public class WindowFunctions {
     public static void main(String[] args) {
         SparkSession spark = Utils.createSparkSession();
 
-        String[] columns = new String[]{"year", "occupation", "show", "group", "raw_guest"};
-        int columnsLen = columns.length;
-        StructField[] fields = new StructField[columnsLen];
-        for (int i = 0; i < columnsLen; i++) {
-            fields[i] = DataTypes.createStructField(columns[i], DataTypes.StringType, true);
-        }
-        StructType schema = DataTypes.createStructType(fields);
+        Utils.registerDailyShowGuestsView(spark);
+        Utils.registerEmployeeView(spark);
 
-        Dataset<String> data = spark.read().textFile("src/main/resources/daily_show_guests");
-        JavaRDD<Row> rowRDD = data.toJavaRDD()
-                .map(line -> {
-                    String[] attributes = line.split(",");
-                    return RowFactory.create(attributes);
-                });
-        Dataset<Row> dataFrame = spark.createDataFrame(rowRDD, schema);
+//        rowNumber(spark);
+//        avg(spark);
+        sum(spark);
 
-        dataFrame.createOrReplaceTempView("daily_show_guests");
-
-        rowNumber(spark);
     }
 
     /**
@@ -107,5 +101,84 @@ public class WindowFunctions {
          * +----+------------------+-----+
          */
 
+    }
+
+    /**
+     * uses the AVG() window function to calculate the average sales for employees
+     * @param spark
+     */
+    static void avg(SparkSession spark) {
+        Dataset<Row> sqlDF = spark.sql("SELECT depname, salary, avg(salary) OVER (PARTITION BY depname) FROM empsalary");
+        sqlDF.show();
+        /**
+         *
+         * +---------+------+------------------------------------------------------------------------------------------------+
+         |  depname|salary|avg(salary) OVER (PARTITION BY depname ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)|
+         +---------+------+------------------------------------------------------------------------------------------------+
+         |  develop|  5200|                                                                                          5020.0|
+         |  develop|  4200|                                                                                          5020.0|
+         |  develop|  4500|                                                                                          5020.0|
+         |  develop|  6000|                                                                                          5020.0|
+         |  develop|  5200|                                                                                          5020.0|
+         |    sales|  4800|                                                                               4866.666666666667|
+         |    sales|  5000|                                                                               4866.666666666667|
+         |    sales|  4800|                                                                               4866.666666666667|
+         |personnel|  3500|                                                                                          3700.0|
+         |personnel|  3900|                                                                                          3700.0|
+         +---------+------+------------------------------------------------------------------------------------------------+
+         */
+
+        Dataset<Row> sqlDF3 = spark.sql("SELECT depname, salary, AVG(salary) OVER (order by salary) FROM empsalary");
+        sqlDF3.show();
+        /**
+         *
+         * +---------+------+----------------------------------------------------------------------------------------------------+
+         |  depname|salary|avg(salary) OVER (ORDER BY salary ASC NULLS FIRST RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)|
+         +---------+------+----------------------------------------------------------------------------------------------------+
+         |personnel|  3500|                                                                                              3500.0|
+         |personnel|  3900|                                                                                              3700.0|
+         |  develop|  4200|                                                                                  3866.6666666666665|
+         |  develop|  4500|                                                                                              4025.0|
+         |    sales|  4800|                                                                                   4283.333333333333|
+         |    sales|  4800|                                                                                   4283.333333333333|
+         |    sales|  5000|                                                                                   4385.714285714285|
+         |  develop|  5200|                                                                                   4566.666666666667|
+         |  develop|  5200|                                                                                   4566.666666666667|
+         |  develop|  6000|                                                                                              4710.0|
+         +---------+------+----------------------------------------------------------------------------------------------------+
+         */
+
+        Dataset<Row> sqlDF2 = spark.sql("SELECT depname, salary, avg(salary) OVER () FROM empsalary");
+        sqlDF2.show();
+        /**
+         * output
+         *
+         * +---------+------+---------------------------------------------------------------------------+
+         * |  depname|salary|avg(salary) OVER (ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)|
+         * +---------+------+---------------------------------------------------------------------------+
+         * |  develop|  5200|                                                                     4710.0|
+         * |  develop|  4200|                                                                     4710.0|
+         * |  develop|  4500|                                                                     4710.0|
+         * |  develop|  6000|                                                                     4710.0|
+         * |  develop|  5200|                                                                     4710.0|
+         * |personnel|  3500|                                                                     4710.0|
+         * |personnel|  3900|                                                                     4710.0|
+         * |    sales|  4800|                                                                     4710.0|
+         * |    sales|  5000|                                                                     4710.0|
+         * |    sales|  4800|                                                                     4710.0|
+         * +---------+------+---------------------------------------------------------------------------+
+         */
+
+
+    }
+
+
+    static void sum(SparkSession spark) {
+        Dataset<Row> sqlDF = spark.sql("SELECT depname, salary, " +
+                "sum(salary) OVER () " +
+                "FROM empsalary");
+        sqlDF.show();
+
+//        WindowSpec spec = Window.partitionBy("depanme").orderBy("salary");
     }
 }

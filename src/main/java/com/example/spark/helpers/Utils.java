@@ -5,7 +5,12 @@ import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Row;
+import org.apache.spark.sql.RowFactory;
 import org.apache.spark.sql.SparkSession;
+import org.apache.spark.sql.types.DataTypes;
+import org.apache.spark.sql.types.StructField;
+import org.apache.spark.sql.types.StructType;
 import scala.Tuple2;
 
 import java.io.Serializable;
@@ -66,5 +71,34 @@ public class Utils implements Serializable {
         JavaPairRDD<String, Integer> pairRDD = jsc.parallelizePairs(input);
 
         return pairRDD;
+    }
+
+    public static void registerDailyShowGuestsView(SparkSession spark) {
+        String[] columns = new String[]{"year", "occupation", "show", "group", "raw_guest"};
+        int columnsLen = columns.length;
+        StructField[] fields = new StructField[columnsLen];
+        for (int i = 0; i < columnsLen; i++) {
+            fields[i] = DataTypes.createStructField(columns[i], DataTypes.StringType, true);
+        }
+        StructType schema = DataTypes.createStructType(fields);
+
+        Dataset<String> data = spark.read().textFile("src/main/resources/daily_show_guests");
+        JavaRDD<Row> rowRDD = data.toJavaRDD()
+                .map(line -> {
+                    String[] attributes = line.split(",");
+                    return RowFactory.create(attributes);
+                });
+        Dataset<Row> dataFrame = spark.createDataFrame(rowRDD, schema);
+
+        dataFrame.createOrReplaceTempView("daily_show_guests");
+    }
+
+    public static void registerEmployeeView(SparkSession spark) {
+        Dataset<Row> df = spark
+                .read()
+                .format("json")
+                .load("src/main/resources/file/window_functions_data.json");
+
+        df.createOrReplaceTempView("empsalary");
     }
 }
